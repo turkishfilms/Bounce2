@@ -2,41 +2,40 @@ class BounceGame {
     constructor({
         balls = [],
         paddles = [],
-        gravity = 0.4,
-        points = 0,
-        highscore = 0,
+        name = games.length + 1, // obvious violation
         boundingBox = new BoundingBox(),
         scoreManager = new ScoreManager(),
-    physics = new Physics() } = {}) {
+        physics = new Physics() } = {}) {
         this.balls = balls
         this.paddles = paddles
-        this.points = points
-        this.highscore = highscore
         this.boundingBox = boundingBox
         this.scoreManager = scoreManager
         this.physics = physics
 
-        this.scoreID = 'heyhey'
-        this.highscoreID = 'hoho'
+        this.name = name
 
-        this.addPaddle(this.newPaddle())
-        this.addBall(this.newBall())
-        this.addDiv(this.scoreID, this.points)
-        this.addDiv(this.highscoreID, this.highscore)
+        this.#addPaddle(this.#newPaddle())
+        this.#addBall(this.#newBall())
+        this.#addDiv(`Game ${this.name} score`, this.scoreManager.currentScore())
+        this.#addDiv(`Game ${this.name} highscore`, this.scoreManager.currentHighscore())
     }
 
-    addDiv = (id) => { //FIXME
-        const scoreDiv = document.createElement("p");
-        scoreDiv.id = id
-        scoreDiv.appendChild(document.createTextNode(`${this.points}\n`))
-        document.body.prepend(scoreDiv)
+    next() {
+        this.#ballsNext()
+        this.#paddlesNext()
+        this.#updateScoreDisplay()
     }
 
-    contains(pos) {
-        return pos.x > this.boundingBox.minX && pos.x < this.boundingBox.maxX && pos.y > this.boundingBox.minY && pos.y < this.boundingBox.maxY
+    receiveBall(pos) {
+        if (this.#contains(pos)) this.#addBall(this.#newBall())
     }
 
-    newPaddle() {
+    //#private
+
+    #addPaddle(paddle) { this.paddles.push(paddle) }
+    #addBall(ball) { this.balls.push(ball) }
+
+    #newPaddle() {
         const x = this.boundingBox.maxX / 2
         const w = this.boundingBox.maxX / 4
         const h = w / 4
@@ -46,9 +45,7 @@ class BounceGame {
         })
     }
 
-    addPaddle(paddle) { this.paddles.push(paddle) }
-
-    newBall() {
+    #newBall() {
         return new Ball({
             xspeed: random(-5, 5),
             yspeed: random(-5, 0),
@@ -59,55 +56,52 @@ class BounceGame {
         })
     }
 
-    addBall(ball) { this.balls.push(ball) }
-
-    updateScoreDisplay() {
-        document.getElementById(`${this.scoreID}`).innerHTML = `Points: ${this.points}\n`
-        document.getElementById(`${this.highscoreID}`).innerHTML = `Highscore: ${this.highscore}\n`
-    }
-
-    resetScore() { this.points = this.scoreManager.resetScore() }
-
-    incrementScore() {
-        this.points = this.scoreManager.incrementScore()
-    }
-
-    ballsNext() {
-        this.balls.forEach((b, i) => {
-            b.move(0)
-            b.showImg()
-            if (this.isBallOffscreen(b)) this.ballFell(i)
-        })
-        this.updateScore()
-    }
-    updateScore() {
-        this.points = this.scoreManager.currentScore()
-        this.highscore = this.scoreManager.currentHighscore()
-        this.updateScoreDisplay
-    }
-    isBallOffscreen(ball) {
-        return ball.y >= this.boundingBox.maxY
-    }
-
-    ballFell(index) {
-        this.removeBall(index)
-        this.resetScore()
-        this.addBall(this.newBall())
-    }
-
-    removeBall(ballIndex) { this.balls.splice(ballIndex, 1) }
-
-    paddlesNext() {
+    #paddlesNext() {
         this.paddles.forEach(p => {
-            p.x = mouseX
+            p.x = mouseX - p.w / 2
             p.showImg()
         })
     }
 
-    next() {
-        this.ballsNext()
-        this.paddlesNext()
-        this.updateScoreDisplay()
+    #ballsNext() {
+        this.balls.forEach((b, i) => {
+            b.move(0)
+            b.show(CJimg)
+            if (this.#isBallOffscreen(b)) this.#ballFell(i)
+        })
     }
+
+    #ballFell(index) {
+        this.#removeBall(index)
+        this.scoreManager.resetScore()
+        this.#addBall(this.#newBall())
+    }
+
+    #removeBall(ballIndex) { this.balls.splice(ballIndex, 1) }
+
+    //DOM
+
+    #addDiv = (id) => { //FIXME
+        const scoreDiv = document.createElement("p");
+        scoreDiv.id = id
+        scoreDiv.appendChild(document.createTextNode(`0\n`))
+        document.body.prepend(scoreDiv)
+    }
+
+    #updateScoreDisplay() {
+        document.getElementById(`Game ${this.name} score`).innerHTML = `Points: ${this.scoreManager.currentScore()}\n`
+        document.getElementById(`Game ${this.name} highscore`).innerHTML = `Highscore: ${this.scoreManager.currentHighscore()}\n`
+    }
+
+    //conditional
+
+    #isBallOffscreen(ball) {
+        return ball.y >= this.boundingBox.maxY
+    }
+
+    #contains(pos) {
+        return pos.x > this.boundingBox.minX && pos.x < this.boundingBox.maxX && pos.y > this.boundingBox.minY && pos.y < this.boundingBox.maxY
+    }
+
 
 }

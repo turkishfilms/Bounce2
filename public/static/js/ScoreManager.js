@@ -5,26 +5,26 @@ class ScoreManager {
     }
 
     resetScore() {
-        this.score = 0
-        return this.score
+        this.#setScore(0)
     }
 
     incrementScore() {
-        console.log("ya")
         this.score++
-        if (this.isHighscore()) this.setHighscore()
-        return this.score
+        if (this.#isHighscore()) this.#setHighscore()
     }
-
-    isHighscore() { return this.score > this.highscore }
-
-    setScore(score) { this.score = score }
-
-    setHighscore() { this.highscore = this.score }
-
-    resetHighscore() { this.highscore = 0 }
 
     currentScore() { return this.score }
 
     currentHighscore() { return this.highscore }
+
+    //#private
+    
+    #isHighscore() { return this.score > this.highscore }
+
+    #setScore(score) { this.score = score }
+
+    #setHighscore() { this.highscore = this.score }
+
+    #resetHighscore() { this.highscore = 0 }
+
 }

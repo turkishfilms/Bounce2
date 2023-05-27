@@ -1,6 +1,6 @@
 class Physics {
-    constructor({ gravity = 0.4, airResistance = 0.9999 } = {}) {
-        this.yForces = { gravity: gravity }
-        this.xForces = { airResistance: airResistance }
+    constructor({ yForces = { gravity: 0.4 }, xForces = { airResistance: 0.9999 } } = {}) {
+        this.yForces = yForces
+        this.xForces = xForces
     }
 }
