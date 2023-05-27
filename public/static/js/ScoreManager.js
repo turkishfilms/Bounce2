@@ -10,6 +10,7 @@ class ScoreManager {
     }
 
     incrementScore() {
+        console.log("ya")
         this.score++
         if (this.isHighscore()) this.setHighscore()
         return this.score
@@ -18,7 +19,7 @@ class ScoreManager {
     isHighscore() { return this.score > this.highscore }
 
     setScore(score) { this.score = score }
-    
+
     setHighscore() { this.highscore = this.score }
 
     resetHighscore() { this.highscore = 0 }

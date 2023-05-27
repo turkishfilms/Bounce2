@@ -13,7 +13,16 @@ class Paddle {
     }
 
     show() {
-        imageMode(CORNER)
-        image(GSimg, this.x, this.y, this.w + this.offsetW, this.h + this.offsetH)
+        // rect(this.x + 29, this.y - 29, this.w - 29, this.h + 29)
+        // paddle.y -this.r
+        // paddle.y + paddle.h + this.r
+        // paddle.x + this.r
+        // paddle.x + paddle.w - this.r
+        rect(this.x, this.y, this.w, this.h)
+        // ellipse(this.x,this.y,this.h)
+    }
+
+    showImg() {
+        image(GSimg, this.x-this.w/2, this.y+this.h/2, this.w + this.offsetW, this.h + this.offsetH)
     }
 }

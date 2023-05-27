@@ -1,18 +1,19 @@
 class Ball {
     constructor({
-        x = width / 2,
-        y = height / 2,
-        r = 0.04 * width,
-        xspeed = 5,
-        yspeed = 5,
+
         boundingBox = new BoundingBox(),
         paddles = [],
         scoreManager = new ScoreManager(),
-        gravity = 0,
+        physics = new Physics(),
+        x = boundingBox.maxX / 2,
+        y = boundingBox.maxY / 2,
+        r = 0.04 * boundingBox.maxX,
+        xspeed = 5,
+        yspeed = 5,
         minXSpeed = -boundingBox.maxX / 40,
-        minYSpeed = -boundingBox.minY / 40,
+        minYSpeed = -1,
         maxXSpeed = boundingBox.maxX / 40,
-        maxYSpeed = -boundingBox.maxY / 100 } = {}) {
+        maxYSpeed = -20 } = {}) {
         this.x = x
         this.y = y
         this.r = r
@@ -21,15 +22,11 @@ class Ball {
         this.boundingBox = boundingBox
         this.paddles = paddles
         this.scoreManager = scoreManager
-        this.gravity = gravity
+        this.physics = physics
         this.minXSpeed = minXSpeed
         this.minYSpeed = minYSpeed
         this.maxXSpeed = maxXSpeed
         this.maxYSpeed = maxYSpeed
-    }
-
-    nextFrame() {
-        this.move()
     }
 
     move(paddleIndex) {
@@ -47,16 +44,21 @@ class Ball {
 
     show() {
         fill(200, 50, 100)
-        ellipse(this.x, this.y, this.r,this.r);
+        ellipse(this.x, this.y, this.r, this.r);
     }
 
     showImg() {
-        imageMode(CENTER)
+        imageMode(CORNER) //CENTER
         image(CJimg, this.x, this.y, 2 * this.r, 2 * this.r)
     }
 
     experienceForce() {
-        this.ySpeed += this.gravity
+        const forces = this.physics
+        
+        for (let force in forces.yForces) this.ySpeed += forces.yForces[force]
+
+        for (let [type, Force] of Object.entries(forces.xForces)) this.xSpeed *= Force
+        // for (let force in forces.xForces) this.xSpeed += force
     }
 
     isCollideWall() {
@@ -68,15 +70,12 @@ class Ball {
     }
 
     isCollidePaddle(paddle) {
-        return this.y + this.r >= paddle.y &&
-            this.y - this.r <= paddle.y + paddle.h &&
-            this.x - this.r >= paddle.x &&
-            this.x + this.r <= paddle.x + paddle.w
+        // rect(paddle.x - this.r, paddle.y + this.r, paddle.x + this.r - paddle.w, paddle.y - this.r - paddle.h)
+        return this.y >= paddle.y &&
+            this.y <= paddle.y + paddle.h &&
+            this.x >= paddle.x &&
+            this.x <= paddle.x + paddle.w
     }
-
-    isHighscore() { return points > highscore }
-
-    updateHighScore(points) { highscore = points }
 
     updatePos() {
         this.x += this.xSpeed
@@ -86,14 +85,18 @@ class Ball {
     reverseXSpeed() { this.xSpeed *= -1 }
 
     randomXSpeed() {
-        const randomXSpeedForce = random(-this.boundingBox.maxX / 20, -this.boundingBox.maxX / 20)
+        const randomXSpeedForce = random(-this.boundingBox.maxX / 20, this.boundingBox.maxX / 20)
 
         return constrain(this.xSpeed + randomXSpeedForce, this.minXSpeed, this.maxXSpeed)
     }
 
+    randomYSpeed() { return random(this.maxYSpeed, this.minYSpeed) }
+
     setXSpeed(speed) { this.xSpeed = speed }
+
+    setYSpeed(speed) { this.ySpeed = speed }
 
     bounceXSpeed() { this.setXSpeed(this.randomXSpeed()) }
 
-    bounceYSpeed() { this.ySpeed = random(-this.maxYSpeed, -this.minYSpeed) }
+    bounceYSpeed() { this.setYSpeed(this.randomYSpeed()) }
 }
