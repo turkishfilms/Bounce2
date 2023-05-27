@@ -17,12 +17,14 @@ function setup() {
 }
 
 function mousePressed() {
-  games[0].addBall(newBall())
+  games[0].addBall(games[0].newBall())
 }
 
 function draw() {
   imageMode(CORNER)
   background(Fimg)
-  games[0].paddles[0].x = mouseX
+  const g = games[0]
+  g.paddles[0].x = mouseX
+  g.next()
 }
 

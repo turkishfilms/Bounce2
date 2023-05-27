@@ -5,17 +5,23 @@ class Ball {
         r = 0.04 * width,
         xspeed = 5,
         yspeed = 5,
-        game = new BounceGame(),
-        minXSpeed = -game.boundingBox.maxX / 40,
-        minYSpeed = -game.boundingBox.minY / 40,
-        maxXSpeed = game.boundingBox.maxX / 40,
-        maxYSpeed = game.boundingBox.maxY / 40 } = {}) {
+        boundingBox = new BoundingBox(),
+        paddles = [],
+        scoreManager = new ScoreManager(),
+        gravity = 0,
+        minXSpeed = -boundingBox.maxX / 40,
+        minYSpeed = -boundingBox.minY / 40,
+        maxXSpeed = boundingBox.maxX / 40,
+        maxYSpeed = -boundingBox.maxY / 100 } = {}) {
         this.x = x
         this.y = y
         this.r = r
-        this.xspeed = xspeed
-        this.yspeed = yspeed
-        this.game = game
+        this.xSpeed = xspeed
+        this.ySpeed = yspeed
+        this.boundingBox = boundingBox
+        this.paddles = paddles
+        this.scoreManager = scoreManager
+        this.gravity = gravity
         this.minXSpeed = minXSpeed
         this.minYSpeed = minYSpeed
         this.maxXSpeed = maxXSpeed
@@ -32,16 +38,16 @@ class Ball {
         this.updatePos()
         if (this.isCollideWall()) this.reverseXSpeed()
 
-        if (this.isCollidePaddle(this.game.paddles[paddleIndex])) {
+        if (this.isCollidePaddle(this.paddles[paddleIndex])) {
             this.bounceYSpeed()
             this.bounceXSpeed()
-            this.game.incrementScore()
+            this.scoreManager.incrementScore()
         }
     }
 
     show() {
         fill(200, 50, 100)
-        ellipse(this.x, this.y, this.r);
+        ellipse(this.x, this.y, this.r,this.r);
     }
 
     showImg() {
@@ -50,15 +56,15 @@ class Ball {
     }
 
     experienceForce() {
-        this.ySpeed += gravity
+        this.ySpeed += this.gravity
     }
 
     isCollideWall() {
-        return this.x + this.r >= this.game.boundingBox.maxX || this.x - this.r <= this.game.boundingBox.minX
+        return this.x + this.r >= this.boundingBox.maxX || this.x - this.r <= this.boundingBox.minX
     }
 
     bringInBounds() {
-        this.x = this.x + this.r > this.game.boundingBox.maxX ? this.game.boundingBox.maxX - this.r : this.game.boundingBox.minX + this.r
+        this.x = this.x + this.r > this.boundingBox.maxX ? this.boundingBox.maxX - this.r : this.boundingBox.minX + this.r
     }
 
     isCollidePaddle(paddle) {
@@ -73,19 +79,21 @@ class Ball {
     updateHighScore(points) { highscore = points }
 
     updatePos() {
-        this.x += this.xspeed
+        this.x += this.xSpeed
         this.y += this.ySpeed
     }
 
-    reverseXSpeed() { this.xspeed *= -1 }
+    reverseXSpeed() { this.xSpeed *= -1 }
 
     randomXSpeed() {
-        const randomXSpeedForce = random(-this.game.boundingBox.maxX / 20, -this.game.boundingBox.maxX / 20)
+        const randomXSpeedForce = random(-this.boundingBox.maxX / 20, -this.boundingBox.maxX / 20)
 
-        return constrain(this.xspeed + randomXSpeedForce, this.minXSpeed, THIS.maxXSpeed)
+        return constrain(this.xSpeed + randomXSpeedForce, this.minXSpeed, this.maxXSpeed)
     }
 
-    bounceXSpeed() { this.setXSpeed() }
+    setXSpeed(speed) { this.xSpeed = speed }
 
-    bounceYSpeed() { this.yspeed = random(-this.game.boundingBox.maxY / 40, -this.game.boundingBox.maxY / 100) }
+    bounceXSpeed() { this.setXSpeed(this.randomXSpeed()) }
+
+    bounceYSpeed() { this.ySpeed = random(-this.maxYSpeed, -this.minYSpeed) }
 }

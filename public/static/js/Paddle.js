@@ -13,7 +13,7 @@ class Paddle {
     }
 
     show() {
-        imageMode(CENTER)
+        imageMode(CORNER)
         image(GSimg, this.x, this.y, this.w + this.offsetW, this.h + this.offsetH)
     }
 }
