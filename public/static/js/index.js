@@ -13,7 +13,7 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight)
-games.push(new BounceGame())
+  games.push(new BounceGame({boundingBox:{minX:0,maxX:windowWidth,minY:0,maxY:windowHeight}}))
 }
 
 function mousePressed() {
