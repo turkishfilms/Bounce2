@@ -59,7 +59,7 @@ class BounceGame {
     #paddlesNext() {
         this.paddles.forEach(p => {
             p.x = mouseX - p.w / 2
-            p.showImg()
+            p.show(Fimg)
         })
     }
 
