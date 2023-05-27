@@ -17,13 +17,13 @@ class Ball {
     } = {}) {
 
         if (!(boundingBox instanceof BoundingBox)) {
-            throw new Error("'boundingBox' isnt of type BoundingBox")
+            throw new Error("'boundingBox' must be an instance of BoundingBox")
         }
         if (!(physics instanceof Physics)) {
-            throw new Error("'physics' isnt of type Physics")
+            throw new Error("'physics' must be an instance of Physics")
         }
         if (!(scoreManager instanceof ScoreManager)) {
-            throw new Error("'scoreManager' isnt of type ScoreManager")
+            throw new Error("'scoreManager' must be an instance of ScoreManager")
         }
 
         this.boundingBox = boundingBox

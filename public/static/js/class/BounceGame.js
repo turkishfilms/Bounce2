@@ -10,16 +10,16 @@ class BounceGame {
     } = {}) {
 
         if (!(boundingBox instanceof BoundingBox)) {
-            throw new Error("'boundingBox' is not of type BoundingBox")
+            throw new Error("'boundingBox' must be an instance of BoundingBox")
         }
         if (!(scoreManager instanceof ScoreManager)) {
-            throw new Error("'scoreManager' is not of type ScoreManager")
+            throw new Error("'scoreManager' must be an instance of ScoreManager")
         }
         if (!(physics instanceof Physics)) {
-            throw new Error("'physics' is not of type Physics")
+            throw new Error("'physics' must be an instance of Physics")
         }
         if (!(domManager instanceof DOMManager)) {
-            throw new Error("'domManager' is not of type DOMManager")
+            throw new Error("'domManager' must be an instance of DOMManager")
         }
 
 
