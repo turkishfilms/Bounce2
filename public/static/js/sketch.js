@@ -9,9 +9,9 @@ let balls = [],
   Fimg, CJimg, GSimg
 
 function preload() {
-  Fimg = loadImage('FN.png')
-  CJimg = loadImage('chug-jug.png')
-  GSimg = loadImage('GoldenScar.png')
+  Fimg = loadImage('resources/FN.png')
+  CJimg = loadImage('resources/chug-jug.png')
+  GSimg = loadImage('resources/GoldenScar.png')
 }
 
 function setup() {
