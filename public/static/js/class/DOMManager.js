@@ -1,6 +1,5 @@
 class DOMManager {
     constructor({ } = {}) {
-        this.x = 0
     }
 
     addDiv = (id) => { //FIXME

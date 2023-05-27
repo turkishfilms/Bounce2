@@ -12,12 +12,12 @@ function setup() {
   createCanvas(windowWidth, windowHeight)
 
   games.push(new BounceGame({
-    boundingBox: {
+    boundingBox: new BoundingBox({
       minX: 0,
       maxX: windowWidth,
       minY: 0,
       maxY: windowHeight
-    }
+    })
   }))
 
   imageMode(CORNER)

@@ -8,13 +8,28 @@ class BounceGame {
         physics = new Physics(),
         domManager = new DOMManager()
     } = {}) {
-        this.balls = balls
-        this.paddles = paddles
+
+        if (!(boundingBox instanceof BoundingBox)) {
+            throw new Error("'boundingBox' is not of type BoundingBox")
+        }
+        if (!(scoreManager instanceof ScoreManager)) {
+            throw new Error("'scoreManager' is not of type ScoreManager")
+        }
+        if (!(physics instanceof Physics)) {
+            throw new Error("'physics' is not of type Physics")
+        }
+        if (!(domManager instanceof DOMManager)) {
+            throw new Error("'domManager' is not of type DOMManager")
+        }
+
 
         this.boundingBox = boundingBox
         this.scoreManager = scoreManager
         this.physics = physics
         this.domManager = domManager
+
+        this.balls = balls
+        this.paddles = paddles
 
         this.name = name || games.length + 1
 
@@ -62,9 +77,10 @@ class BounceGame {
     }
 
     #_newBall() {
+        console.log()
         return new Ball({
-            xspeed: random(-5, 5),
-            yspeed: random(-5, 0),
+            xSpeed: random(-5, 5),
+            ySpeed: random(-5, 0),
             boundingBox: this.boundingBox,
             scoreManager: this.scoreManager,
             paddles: this.paddles,
