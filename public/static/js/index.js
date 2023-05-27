@@ -29,5 +29,5 @@ function mousePressed() {
 
 function draw() {
   background(Fimg)
-  games.forEach(g => g.next())
+  games.forEach(g => g.nextFrame())
 }

@@ -2,28 +2,31 @@ class BounceGame {
     constructor({
         balls = [],
         paddles = [],
-        name = games.length + 1, // obvious violation
+        name,
         boundingBox = new BoundingBox(),
         scoreManager = new ScoreManager(),
-        physics = new Physics() } = {}) {
+        physics = new Physics(),
+        domManager = new DOMManager() } = {}) {
         this.balls = balls
         this.paddles = paddles
+
         this.boundingBox = boundingBox
         this.scoreManager = scoreManager
         this.physics = physics
+        this.domManager = domManager
 
-        this.name = name
+        this.name = name || games.length + 1
 
         this.#addPaddle(this.#newPaddle())
         this.#addBall(this.#newBall())
-        this.#addDiv(`Game ${this.name} score`, this.scoreManager.currentScore())
-        this.#addDiv(`Game ${this.name} highscore`, this.scoreManager.currentHighscore())
+        this.domManager.addDiv(`Game ${this.name} score`, this.scoreManager.currentScore())
+        this.domManager.addDiv(`Game ${this.name} highscore`, this.scoreManager.currentHighscore())
     }
 
-    next() {
+    nextFrame() {
         this.#ballsNext()
         this.#paddlesNext()
-        this.#updateScoreDisplay()
+        this.domManager.updateScoreDisplay(this.name, this.scoreManager.currentScore(), this.scoreManager.currentHighscore())
     }
 
     receiveBall(pos) {
@@ -79,6 +82,8 @@ class BounceGame {
 
     #removeBall(ballIndex) { this.balls.splice(ballIndex, 1) }
 
+
+    //
     //DOM
 
     #addDiv = (id) => { //FIXME
@@ -89,8 +94,8 @@ class BounceGame {
     }
 
     #updateScoreDisplay() {
-        document.getElementById(`Game ${this.name} score`).innerHTML = `Points: ${this.scoreManager.currentScore()}\n`
-        document.getElementById(`Game ${this.name} highscore`).innerHTML = `Highscore: ${this.scoreManager.currentHighscore()}\n`
+        document.getElementById(`Game ${this.name} score`).textContent = `Points: ${this.scoreManager.currentScore()}\n`
+        document.getElementById(`Game ${this.name} highscore`).textContent = `Highscore: ${this.scoreManager.currentHighscore()}\n`
     }
 
     //conditional
