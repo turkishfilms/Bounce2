@@ -1,10 +1,9 @@
 class Ball {
     constructor({
-
         boundingBox = new BoundingBox(),
-        paddles = [],
         scoreManager = new ScoreManager(),
         physics = new Physics(),
+        paddles = [],
         x = boundingBox.maxX / 2,
         y = boundingBox.maxY / 2,
         r = 0.04 * boundingBox.maxX,
@@ -54,11 +53,8 @@ class Ball {
 
     experienceForce() {
         const forces = this.physics
-        
         for (let force in forces.yForces) this.ySpeed += forces.yForces[force]
-
         for (let [type, Force] of Object.entries(forces.xForces)) this.xSpeed *= Force
-        // for (let force in forces.xForces) this.xSpeed += force
     }
 
     isCollideWall() {
