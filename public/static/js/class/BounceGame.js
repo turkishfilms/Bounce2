@@ -2,9 +2,10 @@ class BounceGame {
     constructor({
         balls = [],
         paddles = [],
+        bricks = bricks = [],
         name,
         boundingBox = new BoundingBox(),
-        scoreManager = new ScoreManager(),
+        scoreManager = new ScoreManager2(),
         physics = new Physics(),
         domManager = new DOMManager()
     } = {}) {
@@ -12,7 +13,7 @@ class BounceGame {
         if (!(boundingBox instanceof BoundingBox)) {
             throw new Error("'boundingBox' must be an instance of BoundingBox")
         }
-        if (!(scoreManager instanceof ScoreManager)) {
+        if (!(scoreManager instanceof ScoreManager2)) {
             throw new Error("'scoreManager' must be an instance of ScoreManager")
         }
         if (!(physics instanceof Physics)) {
@@ -55,8 +56,8 @@ class BounceGame {
 
     //#_private
 
-    #_addPaddle(paddle) {
-        this.paddles.push(paddle)
+    #_addPaddle(newPaddle) {
+        this.paddles.push(newPaddle)
     }
 
     #_addBall(ball) {
@@ -74,6 +75,9 @@ class BounceGame {
             h: h,
             y: y
         })
+    }
+    #_addBall(ball) {
+        this.balls.push(ball)
     }
 
     #_newBall() {

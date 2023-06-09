@@ -1,0 +1,15 @@
+
+Game Handler <-
+    BoundingBox boundbox
+    PaddleHandler paddlehandle
+        boundbox
+    BallHandler
+        Ball
+        Physics
+        boundbox
+        paddlehandle
+        scorehandle
+    BrickHandler
+        Brick
+    ScoreHandler
+        scorehandle

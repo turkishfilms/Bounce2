@@ -1,19 +1,24 @@
 class Paddle {
-    constructor({ w = 100, h = 10, x = 10, y = 10, color = { r: 255, g: 255, b: 255 } } = {}) {
-        this.w = w
-        this.h = h
-        this.x = x
-        this.y = y
-        this.offsetW = 10
-        this.offsetH = 50
-        this.color = color
-    }
+  constructor({
+    size = { width: 100, height: 10 },
+    position = { x: 10, y: 10 },
+    color = { r: 255, g: 255, b: 255 },
+  } = {}) {
+    this.position = position;
+    this.size = size;
+    this.offsetW = 10;
+    this.offsetH = 50;
+    this.color = color;
+    this.image = image;
+  }
 
-    show(img) {
-        if (img) image(GSimg, this.x, this.y + this.h / 2, this.w + this.offsetW, this.h + this.offsetH)
-        else {
-            fill(this.color)
-            rect(this.x, this.y, this.w, this.h)
-        }
-    }
+  show() {
+    image(
+      image,
+      this.position.x,
+      this.position.y + this.size.height / 2,
+      this.size.width + this.offsetW,
+      this.size.height + this.offsetH
+    );
+  }
 }

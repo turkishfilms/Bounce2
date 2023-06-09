@@ -1,5 +1,5 @@
 class ScoreManager {
-    constructor({ score = 0, highscore = 0 } = {}) {
+    constructor ({ score = 0, highscore = 0 } = {}) {
         this.score = score
         this.highscore = highscore
     }
@@ -13,18 +13,30 @@ class ScoreManager {
         if (this.#isHighscore()) this.#setHighscore()
     }
 
-    currentScore() { return this.score }
+    currentScore() {
+        return this.score
+    }
 
-    currentHighscore() { return this.highscore }
+    currentHighscore() {
+        return this.highscore
+    }
 
     //#private
-    
-    #isHighscore() { return this.score > this.highscore }
 
-    #setScore(score) { this.score = score }
+    #isHighscore() {
+        return this.score > this.highscore
+    }
 
-    #setHighscore() { this.highscore = this.score }
+    #setScore(score) {
+        this.score = score
+    }
 
-    #resetHighscore() { this.highscore = 0 }
+    #setHighscore() {
+        this.highscore = this.score
+    }
+
+    #resetHighscore() {
+        this.highscore = 0
+    }
 
 }
